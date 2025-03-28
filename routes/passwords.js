@@ -1,30 +1,18 @@
-const express = require("express");
-const Password = require("../models/Password");
-const authMiddleware = require("../middleware/authMiddleware");
-
+// backend/routes/passwords.js
+const express = require('express');
 const router = express.Router();
 
-router.post("/add", authMiddleware, async (req, res) => {
-  const { platform, username, password } = req.body;
-  const newPassword = new Password({ userId: req.user.userId, platform, username, password });
-  await newPassword.save();
-  res.json({ message: "Password saved" });
+// Example Route for getting passwords
+router.get('/', (req, res) => {
+  // Fetch passwords from database (replace with real logic)
+  res.json([{ platform: 'Facebook', password: 'password123' }]);
 });
 
-router.get("/", authMiddleware, async (req, res) => {
-  const passwords = await Password.find({ userId: req.user.userId });
-  res.json(passwords);
-});
-
-router.delete("/:id", authMiddleware, async (req, res) => {
-  await Password.findByIdAndDelete(req.params.id);
-  res.json({ message: "Password deleted" });
-});
-
-router.put("/:id", authMiddleware, async (req, res) => {
-  const { username, password } = req.body;
-  await Password.findByIdAndUpdate(req.params.id, { username, password });
-  res.json({ message: "Password updated" });
+// Example Route for adding a password
+router.post('/', (req, res) => {
+  const newPassword = req.body; // Get the password data from the request
+  // Save to DB (replace with actual save logic)
+  res.status(201).json(newPassword); // Return the new password added
 });
 
 module.exports = router;
